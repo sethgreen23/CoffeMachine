@@ -20,9 +20,12 @@ public class CoffeeMachine {
     }
 
     //stage5
+    //here is the machine states 
     enum MachineState{
         EXIT,BUY,MAIN,FILL_WATTER,FILL_MILK,FILL_COFFE,FILL_CUPS
     }
+    //here the beverage enumeration 
+    //we specify the variety of beverage and the ingredient needed to create them
     enum Beverage{
         EXPRESSO(250,0,16,4),
         LATTE(350,75,20,7),
@@ -56,6 +59,7 @@ public class CoffeeMachine {
         private int coffeBeans;
         private int cups;
         private int money;
+        //the machine have state in every step you use it for
         MachineState state;
         public Machine (int water,int milk,int coffeBeans,int cups,int money){
             this.water=water;
@@ -63,20 +67,29 @@ public class CoffeeMachine {
             this.coffeBeans=coffeBeans;
             this.cups=cups;
             this.money=money;
+            //here we call the main state 
             setMainState();
         }
         //setMainState
         private void setMainState() {
+        	//this is the message that we get when we are starting a new opeation
             System.out.println("\nWrite action (buy, fill, take, remaining, exit):");
             state=MachineState.MAIN;
         }
 
         //is working method
         boolean isWorking(){
+        	//this is the condition that make us exit from the machine
             return state!=MachineState.EXIT;
         }
         //execute method
         public void execute(String input){
+        	//depending on the state we will perform somthing 
+        	//and it is the opening for getting input from the user
+        	//we get input when we are in the main menu
+        	//when we fill the machine with splies
+        	//when we buy
+        	//when we exit
             switch (state){
                 case BUY:
                     handleBuying(input);
@@ -110,6 +123,8 @@ public class CoffeeMachine {
         }
 
         private void setState(String command) {
+        	//this is our router
+        	//with every select in the main menu we get a state
             switch(command){
                 case "buy":
                     System.out.println("\nWhat do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
@@ -132,6 +147,7 @@ public class CoffeeMachine {
                     break;
             }
         }
+        //show the state of the machine from suplies
         private void showCurrentState(){
             System.out.println("\nThe coffee machine has:");
             System.out.println(water+" of water");
@@ -141,11 +157,14 @@ public class CoffeeMachine {
             System.out.println(money+" of money");
             System.out.println();
         }
+        //this take care of showing what we got when the 
+        //employer take way the money from the machine
         private void take_handler() {
             System.out.println("\nI gave you $"+money);
             money=0;
         }
-
+        
+        //this handle the action of buying
         private void handleBuying(String input) {
             Beverage drink=null;
             switch(input){
@@ -166,11 +185,15 @@ public class CoffeeMachine {
 
 
         }
-
+        //here a method that add the cost of the beverage
+        //to the global cash
         private void getPayment(int cost) {
             money+=cost;
         }
-
+        //this method take care of checking if we have available 
+        //supply for the order or not
+        //if it exist then we make the coffe and we take the money
+        //if not we tell that we have shortage in a specific ingredient
         private void checkOrder(Beverage drink) {
             if(water<=drink.neededWater()){
                 System.out.println("\nSorry, not enough water!");
